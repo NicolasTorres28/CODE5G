@@ -1,1 +1,35 @@
+@page "/"
+<h5>Nombre del ciclo, @ciclo.ToUpper()</h5>
+<br> 
+@code  {
+    string ciclo = "Desarrollo de software"; 
+}
 
+
+    <form>
+        @Primera fila, cotiene 1 input de texto@
+        <div class="form-group row">
+            <label for="name" class="col-md-2 col-form-label">Nombre</label>
+            <input type="text" name="name" id="name" class="form-control">
+        </div>
+        @Segunda fila contiene 2 input, uno recibe texto y otro numero@
+        <div class="form-group row">
+            <div class="col">
+                <label for="ciclo" class="col-md-2 col-form-label">Ciclo</label>
+                <input type="text" name="ciclo" id="ciclo" class="form-control">
+            </div>
+            <div class="col">
+                <label for="num_ciclo" class="col-md-2 col-form-label">Número</label>
+                <input type="number" name="ciclo" id="num_ciclo" class="form-control">
+            </div>
+        </div>
+        @Tercer fila, cotiene un textarea@
+        <div class="form-group row">
+            <label for="message" class="col-md-2 col-form-label">Comentarios</label>
+            <div class="col-md-10">
+                <textarea name="message" id="message" cols="30" rows="10" placeholder="Aquí van tus comentarios" class="form-cotrol">
+
+                </textarea>
+            </div>
+        </div>
+    </form>
