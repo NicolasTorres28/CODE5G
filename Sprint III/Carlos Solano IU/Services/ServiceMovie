@@ -1,0 +1,25 @@
+using System;
+using PeliculasCODE5G.Shared.Entity;
+using System.Collections.Generic;
+
+namespace PeliculasCODE5G.Client.Services
+{
+    public class ServiceMovie: IServiceMovie
+    {
+        public List<Movie>GetMovies(){
+            return new List<Movie>(){
+                new Movie(){MovieName="LUCA", Image="/Images/beta11.jpg", Category=" Comedia, Infantil", Sinopsis="Descripcion Pelicula", Score = 100, Premier= new DateTime(2021,08,14)},
+                new Movie(){MovieName="La Patrulla Canina", Image="/Images/beta1.jpg", Category="Infantil", Sinopsis="Descripcion Pelicula", Score = 100, Premier= new DateTime(2021,03,09)},
+                new Movie(){MovieName="Maligno", Image="/Images/beta2.jpg", Category="Terror, Accion", Sinopsis="Descripcion Pelicula", Score = 100, Premier= new DateTime(2021,06,11)},
+                new Movie(){MovieName="Sweet Girl", Image="/Images/beta3.jpg", Category="Accion", Sinopsis="Descripcion Pelicula", Score = 100, Premier= new DateTime(2021,05,22)},
+                new Movie(){MovieName="Space Jam", Image="/Images/beta12.jpg", Category="Comedia, Ciencia ficcion", Sinopsis="Descripcion Pelicula", Score = 100, Premier= new DateTime(2021,10,13)},
+                new Movie(){MovieName="Jefe En Pañales 2", Image="/Images/beta5.jpg", Category="Infantil, Comedia", Sinopsis="Descripcion Pelicula", Score = 100, Premier= new DateTime(2021,08,24)},
+                new Movie(){MovieName="SAS:El Ascenso Del Cisne Negro", Image="/Images/beta6.jpg", Category="Accion, Ciencia ficcion", Sinopsis="Descripcion Pelicula", Score = 100, Premier= new DateTime(2020,09,14)},
+                new Movie(){MovieName="Jumgle Cruise", Image="/Images/beta7.jpg", Category="Accion, Aventura", Sinopsis="Descripcion Pelicula", Score = 100, Premier= new DateTime(2021,01,20)},
+                new Movie(){MovieName="El Escuadron Suicida", Image="/Images/beta8.jpg", Category="Accion, Ciencia ficcion, Aventura", Sinopsis="Descripcion Pelicula", Score = 100, Premier= new DateTime(2021,04,10)},
+                new Movie(){MovieName="JOLT", Image="/Images/beta9.jpg", Category="Accion", Sinopsis="Descripcion Pelicula", Score = 100, Premier= new DateTime(2021,07,15)},
+                new Movie(){MovieName="Escape Room 2", Image="/Images/beta10.jpg", Category="Suspenso, Accion, Ciencia ficcion", Sinopsis="Descripcion Pelicula", Score = 100, Premier= new DateTime(2021,12,05)}
+            };
+        }
+    }
+}
