@@ -1,0 +1,44 @@
+@using System.Net.Http
+@using System.Net.Http.Json
+@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.AspNetCore.Components.Routing
+@using Microsoft.AspNetCore.Components.Web
+@using Microsoft.AspNetCore.Components.Web.Virtualization
+@using Microsoft.AspNetCore.Components.WebAssembly.Http
+@using Microsoft.JSInterop
+@using SprintIII_G34.Client
+@using SprintIII_G34.Client.Sharedusing System.Collections.Immutable;
+using System.Runtime.Serialization;
+using System.Net.Security;
+using System;
+using System.Net.Http;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using System.Text;
+using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using SprintIII_G34.Client.Services;
+
+namespace SprintIII_G34.Client
+{
+    public class Program
+    {
+        public static async Task Main(string[] args)
+        {
+            var builder = WebAssemblyHostBuilder.CreateDefault(args);
+            builder.RootComponents.Add<App>("#app");
+
+            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+            ConfigureServices(builder.Services);
+            await builder.Build().RunAsync();
+        }
+        private static void ConfigureServices(IServiceCollection services)  {
+            services.AddSingleton<IServicePelicula, ServicePelicula>();
+        }
+    }
+}
+
+@using SprintIII_G34.Shared.Entity
+@using SprintIII_G34.Client.Services
