@@ -1,0 +1,14 @@
+@page "/"
+@inject IServicePelicula movie
+<div class="jumbotron">
+    <PeliculaCardComponent Movies = "Movies">
+
+    </PeliculaCardComponent>
+</div>
+@code{
+    private List<Movie>Movies;
+        protected override void OnInitialized() {
+            Movies = movie.GetMovies();
+        }
+}
+
