@@ -1,1 +1,60 @@
+<div class="jumbotron">
+    <h3>Tendencia</h3>
+    <img src="@BetaMovie1.Image" class="img-fluid">
+    <h5 class="text-center">
+        Nombre de la pelicula: <p class="mp-0"><small class="text-muted"> @BetaMovie1.MovieName</small></p>
+    </h5>
+    <blockquote class ="blockquote text-center">
+        Vista general:
+        <p class="mp-0"><small>@BetaMovie1.Sinopsis</small></p>
+        Genero:
+        <p class="mp-0"><small>@BetaMovie1.Category</small></p>
+        <footer class= "blockquote-footer">
+            <cite>@BetaMovie1.Premier.ToString("dd-MM-yyyy")</cite>
+        </footer>
+    </blockquote>
+</div>
 
+<div class="jumbotron">
+    <h3>Estrenos</h3>
+    <div class="container-fluid">
+        <div class="row mb-3">
+            @foreach (var movie in Movies)
+            {
+                <div class="col-md-4">
+                    <div class="card flex-md-row mb-4 box-shadow h-md-270">
+                        <div class="card-body d-flex flex-column align-items-start">
+                            <div class="card">
+                                <img src="@movie.Image" class="card-img-top" alt="...">
+                                <div class="card-body">
+                                    <h5 class="card-title">@movie.MovieName</h5>
+                                    <p class="card-text">@movie.Sinopsis</p>
+                                    <p class="card-text">@movie.Score</p>
+                                </div>
+                                <div class="card-footer">
+                                    <small class="text-muted">@movie.Premier</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+@code {
+    [Parameter] public List<Movie> Movies {get;set;}
+    
+    private Movie GetMovie(){
+        return new Movie(){
+            MovieName = "Free Guy",
+            Sinopsis = "Un hombre descubre que en realidad es un personaje dentro de un videojuego. Guy (Ryan Reynolds) trabaja como cajero de un banco, es un tipo alegre y solitario al que nada la amarga el día. Incluso si le utilizan como rehén durante un atraco a su banco, él sigue sonriendo como si nada. Pero un día se da cuenta de que Free City no es exactamente la ciudad que él creía. Guy va a descubrir que en realidad es un personaje no jugable dentro de un brutal videojuego. Ahora que sabe que es un personaje de videojuego, Guy, acompañado por Molotov Girl (Jodie Comer), decidirá enfrentarse a todos los villanos que asolan la ciudad.",
+            Category = "Comedia, Acción, Aventura, Ciencia ficción",
+            Image = "/Images/beta.jpg",
+            Premier = new DateTime(2021, 08, 13)
+        };
+    }
+    public Movie BetaMovie1{
+        get{return GetMovie();}
+    }
+}
