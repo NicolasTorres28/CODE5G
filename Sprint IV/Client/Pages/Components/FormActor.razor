@@ -1,0 +1,51 @@
+<div class="container">
+    <div class="jumbotron">
+        <EditForm Model="Actor" OnValidSubmit="OnValidSubmit">
+            <DataAnnotationsValidator></DataAnnotationsValidator>
+            <div class="mb-3">
+                <InputText class="form-control" @bind-Value="@Actor.ActorName" placeholder="Actor"></InputText>
+                <ValidationMessage For="@(()=>Actor.ActorName)"></ValidationMessage>
+            </div>
+            <div class="form-group row mb-3">
+                <div class="col-sm-8">
+                    <InputDate class="form-control" @bind-Value="@Actor.BirthDate"></InputDate>
+                    <ValidationMessage For="@(()=>Actor.BirthDate)"></ValidationMessage>
+                </div>
+
+                <div class="col-sm-4">
+                    <InputNumber class="form-control" @bind-Value="@Actor.KnowCredits" placeholder="Cantidad de créditos">
+                    </InputNumber>
+                    <ValidationMessage For="@(()=>Actor.KnowCredits)"></ValidationMessage>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <ImageComponent Label="photo" ImageSelected="ImageSelected" ImageURL="@imageURL"></ImageComponent>
+            </div>
+            <div class="form-group"></div>
+            <button class="btn btn-success">Guardar</button>
+        </EditForm>
+    </div>
+</div>
+
+@code {
+    string imageURL;
+    [Parameter] public Actor Actor { get; set; }
+    [Parameter] public EventCallback OnValidSubmit { get; set; }
+
+    protected override void OnInitialized()
+    {
+        if (!string.IsNullOrEmpty(Actor.Photo))
+        {
+            imageURL = Actor.Photo;
+            Actor.Photo = null;
+        }
+    }
+
+    private void ImageSelected(string imageB64)
+    {
+        Actor.Photo = imageB64;
+        imageURL = null;
+    }
+
+}

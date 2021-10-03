@@ -1,0 +1,142 @@
+@using PeliculasCODE5G.Client.Model
+<style type ="text/css">
+    .selector-multiple{
+        display: flex;
+    }
+
+    .selectable-ul{
+        height: 200px;
+        overflow-y: auto;
+        list-style-type: none;
+        width: 170px;
+        padding: 0;
+        border-radius: 10px;
+        border: 1px solid #ccc;
+    }
+
+    .selectable-ul li:hover{
+        background-color: #969992;
+    }
+
+    .selector-multiple-botones{
+        display: flex;
+        border-radius: 10px;
+        flex-direction: column;
+        justify-content: center;
+        padding: 5px;
+    }
+
+    .selector-multiple-botones button{
+        margin: 5px;
+    }
+
+    .selector-multiple-botones button:hover{
+        background-color: #969992;
+    }
+</style>
+<div class="form-group">
+    <div class="selector-multiple">
+        @*Cuadro con categorias que se tiene como opcion*@
+        <ul class="selectable-ul">
+            @foreach (var item in NoSeleccionados)
+            {
+                <li @onclick="@(()=> Seleccionar(item))">@item.Value</li>
+            }
+        </ul>
+        @*Seccion de botones*@
+        <div class="selector-multiple-botones">
+            <button type="button" @onclick="SeleccionarTodo">@pasarTodoTexto</button>
+            <button type="button" @onclick="DeseleccionarTodo">@removerTodoTexto</button>
+        </div>
+        @*Cuadro con categorias las cuales ya se seleccionaron*@
+        <ul class="selectable-ul">
+            @foreach (var item in Seleccionados)
+            {
+                <li @onclick="@(()=> Deseleccionar(item))">@item.Value</li>
+            }
+        </ul>
+    </div>
+</div>
+
+<div>
+    <div class="row">
+        <div class="col">
+            <label class="form-label">@Label
+            @* Solo permitiremos el cargue de una imagen*@
+            <InputFile OnChange="OnChange" accept=".jpg,.png,.jpeg,.gif"></InputFile>
+            </label>
+        </div>
+    </div>
+    <div>
+        @if (imageT != null)
+        {
+            <div>
+                <div style="margin:10px">
+                    <img src="data:image/jpeg;base64,@imageT" width="300px"alt="">
+                </div>
+            </div>
+        }
+
+        @if (ImageURL != null)
+        {
+            <div>
+                <div style="margin:10px">
+                    <img src="@ImageURL" width="200px"alt="">
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@code{
+    private string removerTodoTexto ="<<";
+    private string pasarTodoTexto =">>";
+
+    [Parameter]
+    public List<SelectorMultipleModel> NoSeleccionados {get;set;} = new List<SelectorMultipleModel>();
+
+    [Parameter]
+    public List<SelectorMultipleModel> Seleccionados {get;set;} = new List<SelectorMultipleModel>();
+    
+    @*Metodos que se activan desde los cuadros que listan las categorias*@
+    private void Seleccionar(SelectorMultipleModel item)
+    {
+        NoSeleccionados.Remove(item);
+        Seleccionados.Add(item);
+    }
+    private void Deseleccionar(SelectorMultipleModel item)
+    {
+        Seleccionados.Remove(item);
+        NoSeleccionados.Add(item);
+    }
+    @*Funciones que se activan con el evento clic en el boton*@
+    private void SeleccionarTodo()
+    {
+        Seleccionados.AddRange(NoSeleccionados);
+        NoSeleccionados.Clear();
+    }
+    private void DeseleccionarTodo()
+    {
+        NoSeleccionados.AddRange(Seleccionados);
+        Seleccionados.Clear();
+    }
+
+    [Parameter] public string Label {get;set;} = "Imagen";
+    [Parameter] public string ImageURL {get;set;}
+    [Parameter] public EventCallback<string> ImageSelected {get;set;}
+
+    private string imageT;
+    async Task OnChange(InputFileChangeEventArgs e){
+
+        var images = e.GetMultipleFiles();
+        foreach (var image in images)
+        {
+            var tamaño = new byte[image.Size];
+            await image.OpenReadStream().ReadAsync(tamaño);
+            imageT = Convert.ToBase64String(tamaño);
+            ImageURL = null;
+            await ImageSelected.InvokeAsync(imageT);
+            StateHasChanged();
+        }
+    }
+}

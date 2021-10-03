@@ -1,0 +1,9 @@
+@page "/categories/create"
+<FormCategory OnValidSubmit="Create" Category="Category"></FormCategory>
+@code{
+    private Category Category = new Category();
+    private void Create(){
+        Console.WriteLine($"Nombre de la categoria: {Category.Name}");
+    }
+
+}
