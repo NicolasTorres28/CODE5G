@@ -1,0 +1,16 @@
+@page "/actors/create"
+@using PeliculasCODE5G.Client.Pages.Components
+<FormActor OnValidSubmit="Create" Actor="Actor"></FormActor>
+@code{
+    private Actor Actor = new Actor();
+    
+    async Task Create()
+    {
+        Console.WriteLine(Actor.ActorName);
+        Console.WriteLine(Actor.BirthDate);
+        Console.WriteLine(Actor.KnowCredits);
+        Console.WriteLine(Actor.Nominations);
+        Console.WriteLine(Actor.Biography);
+        Console.WriteLine(Actor.Photo);
+    }
+}

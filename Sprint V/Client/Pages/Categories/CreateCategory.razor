@@ -1,0 +1,19 @@
+@page "/categories/create"
+@using PeliculasCODE5G.Client.Pages.Components
+@inject IServiceMovie movie
+@inject NavigationManager navigationManager
+
+<FormCategory Category="Category" OnValidSubmit="Create"></FormCategory>
+@code {
+    private Category Category = new Category();
+
+    private async Task Create(){ 
+        var httpResponse = await movie.Post("api/categories", Category);
+        if(httpResponse.Error){
+           var body = await httpResponse.GetBody();
+        }else{
+            navigationManager.NavigateTo("/categories");
+        }
+        Console.WriteLine($"Nombre de la categoría: {Category.Name}");
+    }
+}
