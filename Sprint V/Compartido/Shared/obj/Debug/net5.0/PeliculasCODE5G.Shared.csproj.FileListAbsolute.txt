@@ -1,0 +1,12 @@
+C:\PeliculasCODE5G\Shared\bin\Debug\net5.0\PeliculasCODE5G.Shared.deps.json
+C:\PeliculasCODE5G\Shared\bin\Debug\net5.0\PeliculasCODE5G.Shared.dll
+C:\PeliculasCODE5G\Shared\bin\Debug\net5.0\ref\PeliculasCODE5G.Shared.dll
+C:\PeliculasCODE5G\Shared\bin\Debug\net5.0\PeliculasCODE5G.Shared.pdb
+C:\PeliculasCODE5G\Shared\obj\Debug\net5.0\PeliculasCODE5G.Shared.csproj.AssemblyReference.cache
+C:\PeliculasCODE5G\Shared\obj\Debug\net5.0\PeliculasCODE5G.Shared.GeneratedMSBuildEditorConfig.editorconfig
+C:\PeliculasCODE5G\Shared\obj\Debug\net5.0\PeliculasCODE5G.Shared.AssemblyInfoInputs.cache
+C:\PeliculasCODE5G\Shared\obj\Debug\net5.0\PeliculasCODE5G.Shared.AssemblyInfo.cs
+C:\PeliculasCODE5G\Shared\obj\Debug\net5.0\PeliculasCODE5G.Shared.csproj.CoreCompileInputs.cache
+C:\PeliculasCODE5G\Shared\obj\Debug\net5.0\PeliculasCODE5G.Shared.dll
+C:\PeliculasCODE5G\Shared\obj\Debug\net5.0\ref\PeliculasCODE5G.Shared.dll
+C:\PeliculasCODE5G\Shared\obj\Debug\net5.0\PeliculasCODE5G.Shared.pdb
