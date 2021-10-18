@@ -1,0 +1,56 @@
+@page "/actors"
+@using PeliculasCODE5G.Client.Pages.Components
+@inject IServiceMovie movie
+@inject IErrorMessage showMessage
+ 
+<div class="form-group mb-3">
+    <a class="btn btn-info  btn-sm" href="actors/create">Agregar actor</a>
+</div>
+<GenericList ListResults="Actors">
+    <HayRegistrosCompleto>
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Opciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Actors)
+                {
+                    <tr>
+                        <td>@item.ActorName</td>
+                        <td>
+                            <a href="/actors/edit/@item.Id" class="btn btn-info btn-sm">Editar</a>
+                            <button @onclick="@(()=>DeleteActor(item))" class="btn btn-danger btn-sm">Eliminar</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </HayRegistrosCompleto>
+</GenericList>
+@code {
+    public List<Actor> Actors { get; set; }
+    protected async override Task OnInitializedAsync()
+    {
+ 
+        await Load();
+    }
+    private async Task Load()
+    {
+        var responseHttp = await movie.Get<List<Actor>>("api/actors");
+        Actors = responseHttp.Response;
+    }
+ 
+    private async Task DeleteActor(Actor Actor){
+        var responseHttp = await movie.Delete($"api/actors/{Actor.Id}");
+        if (responseHttp.Error)
+        {
+            await showMessage.ShowErrorMessage(await responseHttp.GetBody());
+        }else{
+            await Load();
+        }
+    }
+}
+

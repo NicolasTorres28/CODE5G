@@ -1,0 +1,25 @@
+@page "/actors/create"
+@using PeliculasCODE5G.Client.Pages.Components
+@inject IServiceMovie repositorio
+@inject NavigationManager navigationManager
+
+
+<h3>Crear Actores</h3>
+<FormActor OnValidSubmit="Create" Actor="Actor" />
+
+@code {
+    private Actor Actor = new Actor();
+
+    private async Task Create()
+    {
+        var httpResponse = await repositorio.Post("api/actors", Actor);
+        if (httpResponse.Error)
+        {
+            var body = await httpResponse.GetBody();
+        }
+        else
+        {
+            navigationManager.NavigateTo("/actors");
+        }
+    }
+}

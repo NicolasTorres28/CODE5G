@@ -1,0 +1,58 @@
+@page "/categories"
+@using PeliculasCODE5G.Client.Pages.Components
+@inject IServiceMovie movie
+@inject IErrorMessage showMessage
+ 
+ 
+<div class="form-group mb-3">
+    <a class="btn btn-info btn-sm" href="categories/create">Agregar categoría</a>
+</div>
+<h6>Listado de categorías</h6>
+<GenericList ListResults="Categories">
+    <HayRegistrosCompleto>
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Opciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Categories)
+                {
+                    <tr>
+                        <td>@item.Name</td>
+                        <td>
+                            <a href="/categories/edit/@item.Id" class="btn btn-info btn-sm">Editar</a>
+                            <button @onclick="@(()=>DeleteCategory(item))" class="btn btn-danger btn-sm">Eliminar</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </HayRegistrosCompleto>
+</GenericList>
+@code {
+    public List<Category> Categories { get; set; }
+    protected async override Task OnInitializedAsync()
+    {
+ 
+        await Load();
+    }
+    private async Task Load()
+    {
+        var responseHttp = await movie.Get<List<Category>>("api/categories");
+        Categories = responseHttp.Response;
+    }
+ 
+    private async Task DeleteCategory(Category category){
+        var responseHttp = await movie.Delete($"api/categories/{category.Id}");
+        if (responseHttp.Error)
+        {
+            await showMessage.ShowErrorMessage(await responseHttp.GetBody());
+        }else{
+            await Load();
+        }
+    }
+}
+

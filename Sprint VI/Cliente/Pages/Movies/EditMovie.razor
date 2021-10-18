@@ -1,0 +1,67 @@
+@page "/movies/edit/{Id:int}"
+@using PeliculasCODE5G.Client.Pages.Components
+@using PeliculasCODE5G.Shared.Models
+@inject IServiceMovie movie_i
+@inject IErrorMessage showMessage
+@inject NavigationManager navigationManager
+ 
+<h3>Editar Pelicula</h3>
+ 
+@if (Movie == null)
+{
+       <div class="alert alert-info" role="alert">Cargando</div>
+ 
+}
+else
+{
+    <FormMovie Movie="Movie" OnValidSubmit="Edit"
+                         ActoresSeleccionados="ActoresSeleccionados"
+                         CategoriasNoSeleccionadas="CategoriasNoSeleccionadas"
+                         CategoriasSeleccionadas="CategoriasSeleccionadas"></FormMovie>
+}
+ 
+@code {
+    [Parameter] public int Id { get; set; }
+    Movie Movie;
+    private List<Category> CategoriasSeleccionadas = new List<Category>();
+    private List<Category> CategoriasNoSeleccionadas = new List<Category>();
+    private List<Actor> ActoresSeleccionados { get; set; }
+ 
+    protected async override Task OnInitializedAsync()
+    {
+        var httpResponse = await movie_i.Get<PutMovie>($"api/movies/edit/{Id}");
+ 
+        if (httpResponse.Error)
+        {
+            if (httpResponse.HttpResponseMessage.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                navigationManager.NavigateTo("");
+            }
+            else
+            {
+                await showMessage.ShowErrorMessage(await httpResponse.GetBody());
+            }
+        }
+        else
+        {
+            var model = httpResponse.Response;
+            ActoresSeleccionados = model.Actors;
+            CategoriasNoSeleccionadas = model.CategoriasNoSeleccionadas;
+            CategoriasSeleccionadas = model.CategoriasSeleccionadas;
+            Movie = model.Movie;
+        }
+    }
+ 
+    private async Task Edit()
+    {
+        var httpResponse = await movie_i.Put("api/movies", Movie);
+        if (httpResponse.Error)
+        {
+            await showMessage.ShowErrorMessage(await httpResponse.GetBody());
+        }
+        else
+        {
+            navigationManager.NavigateTo($"movie/{Id}");
+        }
+    }
+}

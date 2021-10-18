@@ -1,0 +1,13 @@
+.selector-multiple{
+    display: flex;
+}
+
+.selectable-ul{
+    height: 200px;
+    overflow-y: auto;
+    list-style-type: none;
+    width: 170px;
+    padding: 0%;
+    border-radius: 3px;
+    border: 1px solid #ccc;
+}

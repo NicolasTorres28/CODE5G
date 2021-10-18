@@ -1,0 +1,30 @@
+@inject IJSRuntime js
+@inject IServiceMovie movie_i
+@inject IErrorMessage showMessage
+ 
+<div style="display: flex; flex-wrap: wrap; align-items: center;">
+    <GenericList Listado="Movies">
+        <HayRegistros Context="movie">
+            <MovieInd Movie="movie" DeleteMovie="DeleteMovie" />
+        </HayRegistros>
+    </GenericList>
+</div>
+ 
+@code {
+    [Parameter] public List<Movie>Movies { get; set; }
+ 
+    /*async Task DeleteMovie(Movie movie)
+    {
+        var confirmar = await js.Confirm($"¿Desea borrar la película {movie.Name}?");
+        if (confirmar)
+        {
+            var responseHttp = await movie_i.Delete($"api/movies/{movie.Id}");
+            if (responseHttp.Error)
+            {
+                await showMessage.ShowErrorMessage(await responseHttp.GetBody());
+            }else{
+                Movies.Remove(movie);
+            }
+        }
+    }*/
+}

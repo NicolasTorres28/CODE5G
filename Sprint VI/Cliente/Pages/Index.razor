@@ -1,0 +1,32 @@
+﻿@page "/"
+@using PeliculasCODE5G.Client.Pages.Components
+@using PeliculasCODE5G.Shared.Models
+ 
+@inject IServiceMovie movie_i
+@inject IErrorMessage showMessage
+@inject NavigationManager navigationManager
+ 
+<h6>Ver pelicula</h6>
+ 
+<div class="container">
+    <div class="jumbotron">
+        <div>
+            <MovieList Movies="EnCartelera"></MovieList>
+        </div>
+        <div>
+            <MovieList Movies="Estrenos"></MovieList>
+        </div>
+    </div>
+</div>
+@code {
+    private List<Movie> Estrenos;
+    private List<Movie> EnCartelera;
+ 
+    protected async override Task OnInitializedAsync()
+    {
+        var responseHttp = await movie_i.Get<FilterMovie>("api/movies");
+        Estrenos = responseHttp.Response.ProximosEstrenos;
+        EnCartelera = responseHttp.Response.PeliculasEnCartelera;
+    }
+ 
+}

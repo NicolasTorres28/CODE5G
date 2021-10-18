@@ -1,0 +1,59 @@
+@page "/actors/edit/{Id:int}"
+@using PeliculasCODE5G.Client.Pages.Components
+@inject IServiceMovie movie
+@inject IErrorMessage showMessage
+@inject NavigationManager navigationManager
+ 
+<div class="container">
+    <div class="jumbotron">
+        <h6>Editar actor</h6>
+        @if (Actor == null)
+        {
+            <div class="alert alert-info" role="alert">Cargando</div>
+        }
+        else
+        {
+            <FormActor Actor="Actor" OnValidSubmit="Edit"></FormActor>
+ 
+        }
+    </div>
+</div>
+ 
+@code {
+ 
+    [Parameter] public int Id { get; set; }
+    Actor Actor;
+    protected async override Task OnInitializedAsync()
+    {
+        var httpResponse = await movie.Get<Actor>($"api/actors/{Id}");
+        if (httpResponse.Error)
+        {
+            @* Validar que el error se debe a que no encontro la ruta: 404 *@
+            if (httpResponse.HttpResponseMessage.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                navigationManager.NavigateTo("actors");
+            }
+            else
+            {
+                @* Se encontro otro tipo de error *@
+                await showMessage.ShowErrorMessage(await httpResponse.GetBody());
+            }
+        }
+        else
+        {
+            Actor = httpResponse.Response;
+            Console.WriteLine(Actor.Photo);
+        }
+    }
+ 
+    private async Task Edit()
+    {
+        var httpResponse = await movie.Put("api/actors", Actor);
+        if (httpResponse.Error)
+        {
+            await showMessage.ShowErrorMessage(await httpResponse.GetBody());
+        }else{
+            navigationManager.NavigateTo("actors");
+        }
+    }
+}

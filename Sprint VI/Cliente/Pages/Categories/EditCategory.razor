@@ -1,0 +1,74 @@
+@page "/categories/edit/{Id:int}"
+@using PeliculasCODE5G.Client.Pages.Components
+@inject IServiceMovie movie
+@inject IErrorMessage showMessage
+@inject NavigationManager navigationManager
+
+@if (Category == null)
+{
+    <div class="alert alert-info" role="alert">Cargando</div>
+}
+else
+{
+    <FormCategory Category="Category" OnValidSubmit="Edit"></FormCategory>
+ 
+}
+@code {
+ 
+    [Parameter] public int Id { get; set; }
+    private Category Category;
+ 
+    protected async override Task OnInitializedAsync()
+    {
+        var responseHttp = await movie.Get<Category>($"api/categories/{Id}");
+        if (responseHttp.Error)
+        {
+            if (responseHttp.HttpResponseMessage.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                navigationManager.NavigateTo("categories");
+            }
+            else
+            {
+                await showMessage.ShowErrorMessage(await responseHttp.GetBody());
+            }
+        }
+        else
+        {
+            Category = responseHttp.Response;
+        }
+    }
+ 
+    private async Task Edit()
+    {
+        var responseHttp = await movie.Put("api/categories", Category);
+        if (responseHttp.Error)
+        {
+            await showMessage.ShowErrorMessage(await responseHttp.GetBody());
+        }
+        else
+        {
+             navigationManager.NavigateTo("categories");
+        }
+    }
+}
+
+
+
+@*<FormCategory OnValidSubmit="Edit" Category="Category"></FormCategory>
+@code{
+    [Parameter] public int Id {get;set;}
+    private Category Category;
+    
+    protected override void OnInitialized(){
+        Category = new Category(){
+            Id = Id, 
+            Name="Comedia"
+        };
+    }
+
+    private void Edit(){
+        Console.WriteLine($"Id: {Category.Id}");
+        Console.WriteLine($"Categoría: {Category.Name}");
+
+    }
+}*@

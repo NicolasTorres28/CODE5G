@@ -1,0 +1,74 @@
+@page "/movie/{Id:int}"
+@page "/movie/{Id:int}/{Name}"
+@inject IServiceMovie movie_i
+@inject NavigationManager navigationManager
+@inject IErrorMessage showMessage
+ 
+@if (model == null)
+{
+    <text>Cargando...</text>
+}
+else
+{
+    <h2>@model.Movie.Name (@model.Movie.Premier.Value.ToString("yyyy"))</h2>
+    for (int i = 0; i < model.Categories.Count; i++)
+    {
+        if (i < model.Categories.Count - 1)
+        {
+            @linkCategory(model.Categories[i])<text>, </text>
+        }
+        else
+        {
+            @linkCategory(model.Categories[i])
+        }
+    }
+    <text> | </text> <span>@model.Movie.Premier.Value.ToString("dd MMM yyyy")</span>
+    <text> | Promedio: </text> @model.AvgVote.ToString("0.#") <text>/5 | Tu voto: </text> @model.UserVote.ToString("0.#")
+    <div style="display: flex;">
+        <span style="display: inline-block; margin-right: 5px;"><img src="@model.Movie.Poster" style="width: 225px; height: 315px" /></span>
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/@model.Movie.Trailer" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+   
+    <div style="margin-top: 10px;">
+        <h3>Actores</h3>
+        <div style="display: flex; flex-direction: column">
+            @foreach (var actor in model.Actors)
+            {
+                <div style="margin-bottom: 2px;">
+                    <img style="width: 50px;" src="@actor.Photo" />
+                    <span style="display:inline-block;width: 200px;"><a href="/actor/@actor.Id/@actor.Name.Replace(" ", "-")">@actor.Name</a></span>
+                    <span style="display:inline-block; width: 45px;">...</span>
+                    <span>@actor.Character</span>
+                </div>
+            }
+        </div>
+    </div>
+}
+ 
+@code {
+    [Parameter] public int Id { get; set; }
+    [Parameter] public string Name { get; set; }
+    private ShowMovieDB model;
+    private RenderFragment<Category> linkCategory = (category) =>@<a href="movies/search?categoryId=@category.Id">@category.Name</a>;
+ 
+    protected async override Task OnInitializedAsync()
+    {
+        var responseHttp = await movie_i.Get<ShowMovieDB>($"api/movies/{Id}");
+        if (responseHttp.Error)
+        {
+            if (responseHttp.HttpResponseMessage.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                navigationManager.NavigateTo("");
+            }
+            else
+            {
+                var mensajeError = await responseHttp.GetBody();
+                await showMessage.ShowErrorMessage(mensajeError);
+            }
+        }
+        else
+        {
+            model = responseHttp.Response;
+        }
+    }
+}

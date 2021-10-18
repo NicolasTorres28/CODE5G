@@ -1,0 +1,37 @@
+<div class="jumbotron">
+    <h3>Estrenos</h3>
+    <div class="container-fluid">
+        <div class="row mb-3">
+            @foreach (var actor in Actors)
+            {
+                <div class="col-md-4">
+                    <div class="card flex-md-row mb-4 box-shadow h-md-270">
+                        <div class="card-body d-flex flex-column align-items-start">
+                            @*Campos a mostrar en cada card de actores*@
+                            <div class="card">
+                                <img src="@actor.Photo" class="card-img-top" alt="..." height="270px" width="230px" >
+                                <div class="card-body">
+                                    <h5 class="card-title">@actor.ActorName</h5>
+                                    <p class="card-text">@actor.DocumentType</p>
+                                    <p class="card-text">@actor.Document</p>
+                                    <p class="card-text">@actor.Gender</p>
+                                    <p class="card-text">@actor.Nominations</p>
+                                    <p class="card-text">@actor.Biography</p>
+                                </div>
+                                <div class="card-footer">
+                                    <small class="text-muted">@actor.BirthDate</small>
+                                </div>
+                            </div>
+                            @*Finalizacion de la estructura del card*@
+                        </div>
+                    </div>
+                </div>    
+
+            }
+        </div>
+    </div>
+</div>
+@code{
+    [Parameter] public List<Actor> Actors {get;set;}
+
+}
